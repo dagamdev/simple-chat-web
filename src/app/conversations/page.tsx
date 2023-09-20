@@ -6,8 +6,8 @@ export const metadata: Metadata = {
 
 export default function ConversationsPage () {
   return (
-    <section>
-      Seleciona una conversación
+    <section className='flex flex-1 items-center justify-center'>
+      <strong >Seleciona o crea una conversación</strong>
     </section>
   )
 }
