@@ -11,13 +11,9 @@ export default function UserProvider ({ children }: {
   const [user, setUser] = useState<User>()
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-
-    if (token != null) {
-      customFetch<User>('users/me', { token }).then(res => {
-        if (res.id !== undefined) setUser(res)
-      }).catch(e => { console.error(e) })
-    }
+    customFetch<User>('users/me', { token: true }).then(res => {
+      if (res?.id !== undefined) setUser(res)
+    }).catch(e => { console.error(e) })
   }, [])
 
   return (
