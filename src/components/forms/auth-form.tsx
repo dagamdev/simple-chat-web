@@ -2,14 +2,13 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { type FormEvent, useState, type MouseEvent } from 'react'
+import { useState, useEffect, type FormEvent, type MouseEvent } from 'react'
 import { useUser } from '@/hooks'
 import { customFetch } from '@/utils/services'
 import { BsX } from 'react-icons/bs'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { type User } from '@/utils/types'
-import { PROJECT_NAME } from '@/utils/config'
-import Button from '../ui/button'
+import { MAIN_COLOR, PROJECT_NAME } from '@/utils/config'
 
 interface AuthUserData {
   user: User
@@ -20,8 +19,12 @@ export default function AuthForm ({ type }: { type: 'login' | 'signup' }) {
   const [error, setError] = useState('')
   const [show, setShow] = useState(false)
   const [showConfir, setShowConfir] = useState(false)
-  const { setUser } = useUser()
+  const { user, setUser } = useUser()
   const router = useRouter()
+
+  useEffect(() => {
+    if (user !== undefined) router.push('/conversations')
+  }, [])
 
   const handlerSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -33,8 +36,6 @@ export default function AuthForm ({ type }: { type: 'login' | 'signup' }) {
         method: 'POST',
         body: fields
       }).then(res => {
-        // if (res.status === 401) { setError('Campos inválidos\nEl coreo o la contraseña es invalida.'); return }
-
         if (res.token !== undefined) {
           localStorage.setItem('token', res.token)
           setUser(res.user)
@@ -53,11 +54,6 @@ export default function AuthForm ({ type }: { type: 'login' | 'signup' }) {
         method: 'POST',
         body: fields
       }).then(res => {
-        // if (res.status === 400) {
-        //   if (res.message.includes('llave duplicada') && res.message.includes('user_name')) { setError('El nombre de usuario que ingresaste ya ha sido utilizado por otro usuario.\nIngresa otro nombre de usuario'); return }
-        //   if (res.message.includes('llave duplicada') && res.message.includes('email')) { setError('El correo que ingresaste pertenece a otro usuario.\nIngresa otro correo.'); return }
-        // }
-
         if (res.token !== undefined) {
           localStorage.setItem('token', res.token)
           setUser(res.user)
@@ -83,62 +79,82 @@ export default function AuthForm ({ type }: { type: 'login' | 'signup' }) {
   }
 
   return (
-    <form className='flex flex-col gap-y-4 max-w-md' onSubmit={handlerSubmit} >
-      <section className='flex items-center gap-x-2'>
-        <img className='' src={'/icon.png'} alt='icon' width={40} height={40} />
-        <h2 className='font-bold text-2xl text-gray-900'>{PROJECT_NAME}</h2>
+    <form className='space-y-4 max-w-md bg-neutral-100 p-4 rounded-xl shadow-xl'
+      onSubmit={handlerSubmit}
+    >
+      <section className='flex items-center justify-center gap-x-2 my-2'>
+        <img className='' src={'/icon.png'} alt='icon' width={50} height={50} />
+        <h2 className={`text-[${MAIN_COLOR}] font-bold text-3xl`}>{PROJECT_NAME}</h2>
       </section>
 
       {type === 'signup' && (
         <section className=''>
-          <label htmlFor='username'>
-            <span className=''>Nombre de usuario</span>
-            <input className='' onChange={handlerChange} type="text"
+          <label className='flex flex-col font-medium text-gray-900'
+            htmlFor='username'
+          >
+            Nombre de usuario
+            <input className={'bg-transparent mt-1 border-2 border-gray-500 rounded-md py-1 px-3 outline-none ring-1 focus:ring-[#4A87C9] focus:border-[#4A87C9] valid:border-[#4A87C9]'}
+              onChange={handlerChange} type="text"
               id='username' name='username' placeholder='&nbsp;' pattern="^[a-zA-Z0-9_-]+$" minLength={4} required
             />
           </label>
-          <p className=''>Su nombre de usuario debe de ser unico y tener entre <strong>4</strong> y <strong>30</strong> caracteres, y no debe contener espacios, caracteres especiales ni emojis.</p>
+          <p className='text-sm text-neutral-700 px-1'>Su nombre de usuario debe de ser unico y tener entre <strong>4</strong> y <strong>30</strong> caracteres, y no debe contener espacios, caracteres especiales ni emojis.</p>
         </section>
       )}
 
-      <label htmlFor="email" className='flex flex-col'>
-        <span className=''>Correo</span>
-        <input className='' onChange={handlerChange} id='email' type="email" name='email' placeholder='&nbsp;' required />
+      <label htmlFor="email" className='flex flex-col font-medium text-gray-900'>
+        Correo
+        <input className='bg-transparent mt-1 border-2 border-gray-500 rounded-md py-1 px-3 outline-none ring-1 focus:ring-[#4A87C9] focus:border-[#4A87C9] valid:border-[#4A87C9]'
+          onChange={handlerChange} id='email' type="email" name='email' placeholder='&nbsp;' required />
       </label>
 
       <section className=''>
-        <label htmlFor="password">
-          <span className=''>Contraseña</span>
-          <input className=''
+        <label className='flex flex-col relative font-medium text-gray-900' htmlFor="password">
+          Contraseña
+          <input className='bg-transparent mt-1 border-2 border-gray-500 rounded-md py-1 px-3 outline-none ring-1 focus:ring-[#4A87C9] focus:border-[#4A87C9] valid:border-[#4A87C9]'
             onChange={handlerChange} type={show ? 'text' : 'password'} id='password' name='password' placeholder='&nbsp;' minLength={8} maxLength={20} required
           />
+          {show
+            ? <AiOutlineEye className='absolute right-3 bottom-2 cursor-pointer text-lg' id='password' onClick={togglePassword} />
+            : <AiOutlineEyeInvisible className='absolute right-3 bottom-2 cursor-pointer text-lg' id='password' onClick={togglePassword} />
+          }
         </label>
-        {show ? <AiOutlineEye className='' id='password' onClick={togglePassword} /> : <AiOutlineEyeInvisible className='' id='password' onClick={togglePassword} />}
         {type === 'signup' &&
-          <p className=''>Su contraseña debe tener entre <strong>8</strong> y <strong>20</strong> caracteres, contener letras y números, y no debe contener espacios, caracteres especiales ni emojis.</p>
+          <p className='text-sm text-neutral-700 px-1'>Su contraseña debe tener entre <strong>8</strong> y <strong>20</strong> caracteres, contener letras y números, y no debe contener espacios, caracteres especiales ni emojis.</p>
         }
       </section>
 
       {type === 'signup' && <section className=''>
-        <div>
-          <input className='' onChange={handlerChange} type={showConfir ? 'text' : 'password'} name='confirmPassword' placeholder='&nbsp;' minLength={8} maxLength={20} required />
-          <span className=''>Confirmar contraseña</span>
-        </div>
-        {showConfir ? <AiOutlineEye className='' id='confirmPassword' onClick={togglePassword} /> : <AiOutlineEyeInvisible className='' id='confirmPassword' onClick={togglePassword} />}
+        <label className='flex flex-col font-medium text-gray-900 relative' htmlFor='confirmPassword'>
+          Confirmar contraseña
+          <input className='bg-transparent mt-1 border-2 border-gray-500 rounded-md py-1 px-3 outline-none ring-1 focus:ring-[#4A87C9] focus:border-[#4A87C9] valid:border-[#4A87C9]'
+            onChange={handlerChange} type={showConfir ? 'text' : 'password'} name='confirmPassword' placeholder='&nbsp;' minLength={8} maxLength={20} required
+          />
+          {showConfir
+            ? <AiOutlineEye className='absolute right-3 bottom-2 cursor-pointer text-lg' id='confirmPassword' onClick={togglePassword} />
+            : <AiOutlineEyeInvisible className='absolute right-3 bottom-2 cursor-pointer text-lg' id='confirmPassword' onClick={togglePassword} />
+          }
+        </label>
       </section>}
 
-      {error.length > 0 && <section className=''>
-        <BsX className='' onChange={handlerChange} onClick={closeError} />
+      {error.length > 0 && <section className='relative px-3 py-2 rounded-md bg-red-200 border border-red-400 text-red-500 font-medium'>
+        <BsX className='absolute top-2 right-3 text-2xl cursor-pointer' onChange={handlerChange} onClick={closeError} />
         <p className=''>{error}</p>
       </section>}
 
-      <Button >{type === 'login' ? 'Iniciar sección' : 'Registrarse'}</Button>
+      <button className='w-full text-neutral-50 bg-[#4A87C9] hover:brightness-125 rounded-md py-2.5 text-center'
+      >{type === 'login' ? 'Iniciar sección' : 'Registrarse'}</button>
 
-      {
-        type === 'login'
-          ? <p className=''>Aun no tienes una cuenta?, <Link className='' href={'/register'}>registrate</Link></p>
-          : <p className=''>Ya tienes una cuenta?, <Link className='' href={'/login'}>inicia sesión</Link></p>
-      }
+      <p className='text-center text-gray-800'>{type === 'login'
+        ? 'Aun no tienes una cuenta'
+        : 'Ya tienes una cuenta'}?, <Link className={`text-[${MAIN_COLOR}] underline hover:no-underline underline-offset-2`}
+        href={`/${type === 'login'
+          ? 'signup'
+          : 'login'
+        }`}>{type === 'login'
+          ? 'registrate'
+          : 'inicia sesión'
+        }</Link></p>
     </form>
   )
 }
