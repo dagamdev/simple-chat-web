@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function LoginPage () {
   return (
-    <main className='min-h-screen flex justify-center'>
+    <main className='min-h-screen flex justify-center items-center bg-zinc-200'>
       <AuthForm type='login' />
     </main>
   )
