@@ -1,29 +1,18 @@
 'use client'
 
-import { type Conversation } from '@/utils/types'
 import ConversationCard from './card'
-import { useState, useEffect } from 'react'
-import { customFetch } from '@/utils/services'
+import { useConversations } from '@/hooks'
 
 export default function ConversationList () {
-  const [conversations, setConversations] = useState<Conversation[]>([])
-
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (token !== null) {
-      customFetch<Conversation[]>('conversations/', {
-        token
-      }).then(res => {
-        if (typeof res === 'object') setConversations(res)
-      }).catch(e => { console.error('Error in get conversations', e) })
-    }
-  }, [])
+  const { conversations } = useConversations()
 
   return (
-    <nav className='flex flex-1 bg-gray-600'>
-      <ul className='flex flex-col w-full'>
+    <nav className='flex flex-1'>
+      {conversations.length === 0
+        ? <p className='text-center text-slate-300'><strong>Sin conversaciones</strong>, busca a un usuario para iniciar una conversación</p>
+        : <ul className='flex flex-col w-full'>
         {conversations.map(c => <ConversationCard key={c.id} conversation={c} />)}
-      </ul>
+      </ul>}
     </nav>
   )
 }
