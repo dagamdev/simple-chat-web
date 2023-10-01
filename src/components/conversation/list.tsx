@@ -10,7 +10,7 @@ export default function ConversationList () {
     <nav className='flex flex-1'>
       {conversations.length === 0
         ? <p className='text-center text-slate-300'><strong>Sin conversaciones</strong>, busca a un usuario para iniciar una conversación</p>
-        : <ul className='flex flex-col w-full'>
+        : <ul className='flex flex-col w-full gap-y-2'>
         {conversations.map(c => <ConversationCard key={c.id} conversation={c} />)}
       </ul>}
     </nav>
