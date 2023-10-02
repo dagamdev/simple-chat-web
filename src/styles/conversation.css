@@ -2,7 +2,7 @@
   display: none;
 }
 
-@media (width < 500px) {
+@media (max-width: 500px) {
   .chats-icon{
     display: block;
   }
