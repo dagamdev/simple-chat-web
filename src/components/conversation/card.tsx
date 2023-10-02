@@ -13,7 +13,7 @@ export default function ConversationCard ({ conversation }: {
   const imageZise = 40
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
-    if (window.innerWidth < 400) {
+    if (window.innerWidth < 500) {
       const conversationContainer = document.querySelector('.conversation-container')
 
       if (conversationContainer !== null) {

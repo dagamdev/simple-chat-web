@@ -57,7 +57,7 @@ export default function ConversationPage ({ params }: {
   }, [socket])
 
   useEffect(() => {
-    if (window.innerWidth < 400) {
+    if (window.innerWidth < 500) {
       const conversationContainer = document.querySelector('.conversation-container')
 
       if (conversationContainer !== null) {
