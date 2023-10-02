@@ -41,12 +41,12 @@ export default function MessageCard ({ message, prevMessage, nextMessage }: {
             ? 'rounded-tl-none mt-px '
             : ''
           )
-      ) + (nextMessageCreatedAt.getTime() - createdAt.getTime() > 6 * 60000 || user?.id === nextMessage?.author
+      ) + (nextMessageCreatedAt.getTime() - createdAt.getTime() > 6 * 60000 || nextMessage === undefined || user?.id === nextMessage?.author
         ? ''
         : 'rounded-bl-none'
       )
     )}>
-      <p className='text-gray-100'>{message.content}</p>
+      <p className='text-gray-100 whitespace-pre-wrap'>{message.content}</p>
       <p className={'text-xs mt-1 float-right self-end ' + (user?.id === message.author
         ? 'text-gray-300'
         : 'text-gray-400'
