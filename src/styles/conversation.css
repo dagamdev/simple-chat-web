@@ -1,0 +1,34 @@
+.chats-icon{
+  display: none;
+}
+
+@media (width < 400px) {
+  .chats-icon{
+    display: block;
+  }
+
+  .conversation-container::-webkit-scrollbar{
+    display: none;
+  }
+  
+  .conversation-container{
+    width: 100vw;
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+  }
+
+  .conversation-list{
+    width: 100vw;
+    min-width: 100vw;
+    max-width: none;
+    scroll-snap-align: center;
+  }
+  
+  .messages{
+    width: 100vw;
+    min-width: 100vw;
+    scroll-snap-align: center;
+  }
+}
