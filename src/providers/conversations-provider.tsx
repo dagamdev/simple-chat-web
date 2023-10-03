@@ -12,7 +12,11 @@ export default function ConversationsProvider ({ children }: {
     customFetch<Conversation[]>('conversations/', {
       token: true
     }).then(data => {
-      if (typeof data.length === 'number') setConversations(data)
+      if (typeof data.length === 'number') {
+        setConversations(data.sort((a, b) => {
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        }))
+      }
     }).catch(e => { console.error('Error in get conversations: ', e) })
   }, [])
 
