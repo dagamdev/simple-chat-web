@@ -10,7 +10,7 @@ export default function ConversationCard ({ conversation }: {
   const { user } = useUser()
   const path = usePathname()
   const conversationUser = conversation.participants.find(f => f.id !== user?.id)
-  const imageZise = 40
+  const imageZise = 50
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     if (window.innerWidth < 500) {
@@ -24,7 +24,7 @@ export default function ConversationCard ({ conversation }: {
 
   return (
     <li className='w-full'>
-      <Link onClick={handleClick} className={'p-2 no-underline flex rounded-md items-center gap-x-5 hover:bg-gray-500 ' + (path.includes(conversation.id)
+      <Link onClick={handleClick} className={'p-2 no-underline flex rounded-md items-center gap-x-3 hover:bg-gray-500 ' + (path.includes(conversation.id)
         ? 'bg-gray-500'
         : ''
       )} href={`/conversations/${conversation.id}`}>
