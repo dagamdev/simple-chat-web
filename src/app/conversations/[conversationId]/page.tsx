@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, type FormEvent, type ChangeEvent } from 'react'
+import Link from 'next/link'
 import type { Conversation } from '@/utils/types'
 import { customFetch } from '@/utils/services'
 import { useUser } from '@/hooks'
@@ -17,7 +18,7 @@ export default function ConversationPage ({ params }: {
   const { user } = useUser()
 
   const conversationUser = conversation?.participants.find(f => f.id !== user?.id)
-  const imageZise = 56
+  const imageZise = 40
 
   useEffect(() => {
     customFetch<Conversation>(`conversations/${params.conversationId}/`, {
@@ -103,10 +104,15 @@ export default function ConversationPage ({ params }: {
     <section className='messages flex flex-col flex-1 h-screen'>
       <header className='flex items-center bg-gray-600 p-4'>
         <PiChatsFill onClick={handleClick} className='chats-icon text-4xl text-gray-400 mr-6' />
-        <section className='flex items-center gap-x-3'>
-          <img className='rounded-xl' src={conversationUser?.avatar_url ?? '/user.png'} alt={`Avatar de ${conversationUser?.username ?? 'conversacion'}`} width={imageZise} height={imageZise} />
-          <h2 className='text-xl font-bold text-gray-300' >{conversationUser?.username ?? 'Conversación'}</h2>
-        </section>
+        <Link href={`/profile/${conversationUser?.id}`} className='flex items-center gap-x-3'>
+          <img className={conversationUser?.avatar_url === null
+            ? 'rounded-full bg-gray-500'
+            : 'rounded-xl'
+          } src={conversationUser?.avatar_url ?? '/user.png'}
+            alt={`Avatar de ${conversationUser?.username ?? 'conversacion'}`} width={imageZise} height={imageZise}
+          />
+          <h2 className='text-xl font-bold text-gray-300' >{conversationUser?.username ?? 'Cargando...'}</h2>
+        </Link>
       </header>
 
       <Messages conversationId={params.conversationId} socket={socket} />
