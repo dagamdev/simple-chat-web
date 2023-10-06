@@ -18,10 +18,12 @@ export async function customFetch<D=any> (path: string, { token, method, body }:
     headers,
     body: body !== undefined ? JSON.stringify(body) : undefined
   }).then(res => {
-    if (!res.ok) {
-      throw new Error(`Error ${res.status}: ${res.statusText}`)
+    const contentType = res.headers.get('Content-Type')
+
+    if (contentType !== null && contentType.includes('application/json')) {
+      return res.json()
     }
 
-    return res.json()
+    throw new Error(`Error ${res.status}: ${res.statusText}`)
   })
 }
