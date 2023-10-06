@@ -119,10 +119,10 @@ export default function ConversationPage ({ params }: {
 
       <form onSubmit={handleSubmit} className='flex items-center bg-gray-600 p-4 gap-x-2'>
         <textarea onChange={handleChange}
-          className='py-2 px-3 rounded-lg bg-gray-300 w-full h-auto border-none outline-none resize-none'
+          className='py-2 px-3 rounded-md bg-gray-300 w-full h-auto border-none outline-none resize-none'
           style={{ scrollbarWidth: 'none' }}
           rows={1} id='message' name='message' maxLength={2000} placeholder={`Enviar mensaje a ${conversationUser?.username}`} />
-        <button className='flex items-center h-[39px] px-6 rounded-lg bg-green-600 text-gray-100' >
+        <button className='flex items-center h-[39px] px-6 rounded-md bg-green-600 text-gray-100 hover:brightness-125' >
           <BiSolidSend className='sm:hidden text-2xl' />
           <span className='max-sm:hidden' >Enviar</span>
         </button>
