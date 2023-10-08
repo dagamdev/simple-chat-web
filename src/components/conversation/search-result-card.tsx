@@ -41,21 +41,26 @@ export default function SearchResultCard ({ resultUser, closeResults }: {
   }
 
   const content = <>
-    <img className='rounded-full' src={resultUser.avatar_url ?? '/user.png'} alt={`Avatar de ${resultUser.username}`} width={34} height={34} />
-    <div>
+    <picture>
+      <img className={'rounded-full' + (resultUser.avatar_url === null
+        ? ''
+        : ' border border-gray-400'
+      )} src={resultUser.avatar_url ?? '/user.png'} alt={`Avatar de ${resultUser.username}`} width={36} height={36} />
+    </picture>
+    <section className='flex flex-col'>
       <strong>{resultUser.username}</strong>
-      <p>{resultUser.conversationId === null ? 'Crear conversación' : 'Conversación creada'}</p>
-    </div>
+      <i className='text-sm'>{resultUser.conversationId === null ? 'Crear conversación' : 'Conversación creada'}</i>
+    </section>
   </>
 
   return (
-    <li onClick={handleClick} className={'cursor-pointer ' + (resultUser.conversationId === null
+    <li onClick={handleClick} className={'cursor-pointer rounded p-2 hover:bg-gray-400 ' + (resultUser.conversationId === null
       ? 'flex items-center gap-x-2'
       : ''
     )}>
       {resultUser.conversationId === null
         ? content
-        : <Link href={`/conversations/${resultUser.conversationId}`}>
+        : <Link className='flex items-center gap-x-2' href={`/conversations/${resultUser.conversationId}`}>
           {content}
         </Link>
       }

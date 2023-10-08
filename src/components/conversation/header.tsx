@@ -75,7 +75,7 @@ export default function ConversationsHeader () {
         />
         <IoSearch className='text-xl cursor-pointer text-slate-800' />
       </label>
-      <ul className={'absolute top-0 bg-gray-300 w-full rounded-md p-4 ' + (resultsUsers.length === 0
+      <ul className={'absolute top-0 bg-gray-300 w-full rounded-md p-2 ' + (resultsUsers.length === 0
         ? ''
         : 'pt-[50px] after:absolute after:top-[40px] after:w-full after:h-px after:left-0 after:bg-gray-600'
       )}
