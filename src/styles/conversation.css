@@ -2,6 +2,10 @@
   display: none;
 }
 
+.conversation-list{
+  width: min(20rem, 100%);
+}
+
 @media (max-width: 500px) {
   .chats-icon{
     display: block;
