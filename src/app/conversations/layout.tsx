@@ -16,7 +16,7 @@ export default function ConversationsLayout ({ children }: {
 
   return (
     <main className='conversation-container flex'>
-      <section className='conversation-list flex flex-col max-w-xs gap-y-4 bg-gray-600 p-4 relative'>
+      <section className='conversation-list flex flex-col gap-y-4 bg-gray-600 p-4 relative'>
         <ConversationsProvider>
           <ConversationsHeader />
 
@@ -31,7 +31,7 @@ export default function ConversationsLayout ({ children }: {
           <HiOutlineLogout className='text-2xl cursor-pointer text-red-500' />
         </section>
 
-        <span className='version absolute left-1/2 bottom-0 text-xs font-bold text-slate-200'>V{VERSION}</span>
+        <span className='absolute left-1/2 -translate-x-1/2 bottom-0 text-xs font-bold text-slate-300'>V{VERSION}</span>
       </section>
 
       {children}
