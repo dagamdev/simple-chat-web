@@ -21,13 +21,13 @@ export default function MessageCard ({ message, prevMessage, nextMessage }: {
   const isAuthor = user?.id === message.author
 
   return (
-    <li className={'flex gap-x-2 py-1 px-3 rounded-2xl shadow-lg ' + (message.author !== prevMessage?.author
+    <li className={'flex gap-x-2 py-[0.30rem] pl-4 pr-[0.60rem] rounded-2xl shadow-lg ' + (prevMessage !== undefined && message.author !== prevMessage.author
       ? 'mt-6 '
       : ''
     ) + (isAuthor
-      ? 'bg-[#4A87C9] shadow-[#4A87C9]/60 self-end rounded-tr-md ' + (createdAt.getTime() - prevMessageCreatedAt.getTime() > 6 * 60000
+      ? 'bg-[#4A87C9] shadow-[#4A87C9]/60 self-end rounded-tr-md ml-10 ' + (createdAt.getTime() - prevMessageCreatedAt.getTime() > 6 * 60000
         ? 'mt-3 '
-        : (user?.id === prevMessage?.author
+        : (prevMessage !== undefined && user?.id === prevMessage.author
             ? 'rounded-tr-none mt-px '
             : ''
           )
@@ -35,9 +35,9 @@ export default function MessageCard ({ message, prevMessage, nextMessage }: {
         ? ''
         : 'rounded-br-none'
       )
-      : 'bg-slate-700 shadow-slate-700/60 self-start rounded-tl-md ' + (createdAt.getTime() - prevMessageCreatedAt.getTime() > 6 * 60000
+      : 'bg-slate-700 shadow-slate-700/60 self-start rounded-tl-md mr-10 ' + (createdAt.getTime() - prevMessageCreatedAt.getTime() > 6 * 60000
         ? 'mt-3 '
-        : (user?.id !== prevMessage?.author
+        : (prevMessage !== undefined && user?.id !== prevMessage.author
             ? 'rounded-tl-none mt-px '
             : ''
           )
@@ -47,15 +47,10 @@ export default function MessageCard ({ message, prevMessage, nextMessage }: {
       )
     )}>
       <p className='text-gray-100 whitespace-pre-wrap'>{message.content}</p>
-      <p className={'text-xs mt-1 float-right self-end ' + (user?.id === message.author
+      <span className={'text-xs mt-1 float-right self-end ' + (user?.id === message.author
         ? 'text-gray-300'
         : 'text-gray-400'
-      )}>{createdAt.toLocaleTimeString().slice(0, 5)}</p>
-      {/* <div className={'pt-1 pb-1 px-3 rounded-3xl shadow-lg ' + (user?.id === message.author
-        ? 'bg-[#4A87C9] shadow-[#4A87C9]/80'
-        : 'bg-slate-700 shadow-slate-700/80'
-      )}>
-      </div> */}
+      )}>{createdAt.toLocaleTimeString().slice(0, 5)}</span>
     </li>
   )
 }
