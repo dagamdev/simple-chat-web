@@ -19,7 +19,7 @@ export default function Home () {
         <h1 className={'font-bold text-2xl text-[#4A87C9]'}>Bienvenido{user === undefined ? '' : ' de nuevo'}</h1>
         <p className='mb-4'>{user === undefined
           ? 'Inicia seccion o registrate para empesar a chatear'
-          : 'Te estamos Redirigiendo a tus conversaciones...'
+          : 'Te estamos redirigiendo a tus conversaciones...'
         }</p>
         {user === undefined && <>
             <Link href={'/login'} className='button font-bold px-10 py-2 rounded-lg border-2 border-[#4A87C9] my-2 shadow-md text-center text-gray-900 bg-[#4A87C9]'>Iniciar sesión</Link>
